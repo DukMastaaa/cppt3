@@ -59,17 +59,17 @@ void GameView::draw() {
 
 StatusView::StatusView(Game& newGame, int topLeftY, int topLeftX, int cols) : 
         BaseView(newGame) {
-    viewWindow = newwin(1, cols, topLeftY, topLeftX);
+    viewWindow = newwin(2, cols, topLeftY, topLeftX);
 }
 
 
 void StatusView::draw() {
     const char* currentPlayerName = game.getCurrentPlayerName();
-    mvwprintw(viewWindow, 0, 0, "%s's turn", currentPlayerName);  // length check?!
+    mvwprintw(viewWindow, 0, 0, "%s's turn", currentPlayerName);
 }
 
 
 void StatusView::displayWinner(const char* winningPlayerName) {
-    mvwprintw(viewWindow, 0, 0, "%s wins!", winningPlayerName);  // length check?!
+    mvwprintw(viewWindow, 0, 0, "%s wins!", winningPlayerName);
     mvwprintw(viewWindow, 1, 0, "press any key to exit");
 }

@@ -43,11 +43,11 @@ char Board::has_won() {
         if (antiDiagSame) {antiDiagSame = (antiDiagStart == at(i, size - 1 - i));}
 
         if (rowSame) {return rowStart;}
-        if (colSame) {return colSame;}
+        if (colSame) {return colStart;}
     }
 
-    if (diagSame) {return diagSame;}
-    if (antiDiagSame) {return antiDiagSame;}
+    if (diagSame) {return diagStart;}
+    if (antiDiagSame) {return antiDiagStart;}
 
     return EMPTY;
 }

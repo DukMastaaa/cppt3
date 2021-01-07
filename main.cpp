@@ -16,7 +16,6 @@ int getBoardSize() {
 const char* getPlayerName(int playerNumber, char* name) {
     std::cout << "Enter name for player " << playerNumber << ": ";
     std::cin >> name;
-    std::cout << name;
     return name;
 }
 
@@ -43,7 +42,7 @@ int main() {
     
     Game game(boardSize, p1Name, p2Name);
     StatusView statusView(game, 1, 1, 30);
-    GameView gameView(game, 2, 1);
+    GameView gameView(game, 3, 1);
 
     while (game.board.has_won() == EMPTY) {
         // draw stuff
@@ -67,16 +66,16 @@ int main() {
 
     // display the winner
     char winningPlayerToken = game.board.has_won();
-    char* winningPlayerName;
     switch (winningPlayerToken) {
         case NOUGHT:
-            winningPlayerName = p1Name;
+            statusView.displayWinner(p1Name);
             break;
         case CROSS:
-            winningPlayerName = p2Name;
+            statusView.displayWinner(p2Name);
             break;
+        default:
+            throw "uhh what";
     }
-    statusView.displayWinner(winningPlayerName);
     statusView.wnoutrefresh();
     doupdate();
 

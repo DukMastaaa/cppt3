@@ -1,32 +1,53 @@
 #include <ncurses.h>
 #include <iostream>
+#include <stdexcept>
 #include "colours.h"
 #include "model.h"
 #include "view.h"
 
 
+bool stringIsDigit(const std::string& input) {
+    // i can't believe i have to write something like this
+    // low level scum
+    for (char character : input) {
+        if (!isdigit(character)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 int getBoardSize() {
     std::cout << "Enter board size: ";
-    int size;
-    std::cin >> size;
+    std::string input;
+    getline(std::cin, input);
+    if (!stringIsDigit(input)) {
+        throw std::runtime_error("Non-digit entered as input");
+    }
+    int size = std::stoi(input);
+    if (size < 2) {
+        throw std::runtime_error("Board size too low; minimum 2");
+    }
     return size;
 }
 
 
-const char* getPlayerName(int playerNumber, char* name) {
+std::string getPlayerName(int playerNumber) {
     std::cout << "Enter name for player " << playerNumber << ": ";
-    std::cin >> name;
-    return name;
+    std::string input;
+    getline(std::cin, input);
+    return input;
 }
 
 
 int main() {
     int boardSize = getBoardSize();
 
-    char p1Name[30];
-    char p2Name[30];
-    getPlayerName(1, p1Name);
-    getPlayerName(2, p2Name);
+    std::string p1NameString = getPlayerName(1);
+    std::string p2NameString = getPlayerName(2);
+    const char* p1Name = p1NameString.c_str();
+    const char* p2Name = p2NameString.c_str();
 
     initscr();
     if (!has_colors()) {
@@ -41,7 +62,7 @@ int main() {
     curs_set(0);
     
     Game game(boardSize, p1Name, p2Name);
-    StatusView statusView(game, 1, 1, 30);
+    StatusView statusView(game, 1, 1, 40);
     GameView gameView(game, 3, 1);
     bool gameDrawn = false;
 
@@ -85,7 +106,7 @@ int main() {
                 statusView.displayWinner(p2Name);
                 break;
             default:
-                throw "uhh what";
+                throw std::runtime_error("Board::hasWon() is broken");
         }
     }
 

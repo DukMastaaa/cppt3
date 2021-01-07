@@ -38,7 +38,7 @@ void GameView::draw() {
                     colourPair = CYAN_ON_BLACK;
                     break;
                 default:
-                    throw "what";
+                    throw std::runtime_error("Board contains invalid chars");
             }
 
             if (row == game.yPos && col == game.xPos) {
@@ -69,6 +69,7 @@ void StatusView::draw() {
     werase(viewWindow);
     const char* currentPlayerName = game.getCurrentPlayerName();
     mvwprintw(viewWindow, 0, 0, "%s's turn", currentPlayerName);
+    mvwprintw(viewWindow, 1, 0, "wasd/arrow to move, enter to place");
 }
 
 

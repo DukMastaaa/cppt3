@@ -1,11 +1,10 @@
 #include <vector>
-#include <assert.h>
 #include <ncurses.h>
+#include <stdexcept>
 #include "model.h"
 
 
 Board::Board(int boardSize) {
-    assert (boardSize >= 3);
     size = boardSize;
     grid = std::vector<std::vector<char>>(boardSize, std::vector<char>(boardSize, EMPTY));
 }
@@ -83,7 +82,7 @@ const char*& Game::getCurrentPlayerName() {
             return p2Name;
             break;
         default:
-            throw "Player number invalid";
+            throw std::runtime_error("Player number invalid");
     }
 }
 
@@ -126,7 +125,7 @@ void Game::doTurn() {
                 board.set(yPos, xPos, CROSS);
                 break;
             default:
-                throw "Player number invalid";
+                throw std::runtime_error("Player number invalid");
         }
         currentPlayer += 1;
         currentPlayer %= 2;

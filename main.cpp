@@ -43,8 +43,15 @@ int main() {
     Game game(boardSize, p1Name, p2Name);
     StatusView statusView(game, 1, 1, 30);
     GameView gameView(game, 3, 1);
+    bool gameDrawn = false;
 
-    while (game.board.has_won() == EMPTY) {
+    while (game.board.hasWon() == EMPTY) {
+        if (game.board.allCellsFilled()) {  
+            // for this to happen, game.board.hasWon() == false already.
+            gameDrawn = true;
+            break;
+        }
+
         // draw stuff
         statusView.draw();
         gameView.draw();
@@ -54,7 +61,7 @@ int main() {
         // then refresh the screen
         doupdate();
 
-        char input = wgetch(gameView.viewWindow);
+        int input = wgetch(gameView.viewWindow);
         
         if (input == '\n') {
             game.doTurn();
@@ -64,18 +71,24 @@ int main() {
 
     }
 
-    // display the winner
-    char winningPlayerToken = game.board.has_won();
-    switch (winningPlayerToken) {
-        case NOUGHT:
-            statusView.displayWinner(p1Name);
-            break;
-        case CROSS:
-            statusView.displayWinner(p2Name);
-            break;
-        default:
-            throw "uhh what";
+    if (gameDrawn) {
+        statusView.gameDrawn();
+    } else {
+        // display the winner
+        char winningPlayerToken = game.board.hasWon();
+
+        switch (winningPlayerToken) {
+            case NOUGHT:
+                statusView.displayWinner(p1Name);
+                break;
+            case CROSS:
+                statusView.displayWinner(p2Name);
+                break;
+            default:
+                throw "uhh what";
+        }
     }
+
     statusView.wnoutrefresh();
     doupdate();
 

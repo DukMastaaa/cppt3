@@ -16,10 +16,12 @@ void BaseView::wnoutrefresh() {
 GameView::GameView(Game& newGame, int topLeftY, int topLeftX) :
         BaseView(newGame) { 
     viewWindow = newwin(game.board.size, game.board.size, topLeftY, topLeftX);
+    keypad(viewWindow, true);  // allows special chars e.g. arrow keys to be captured
 }
 
 
 void GameView::draw() {
+    werase(viewWindow);
     for (int row = 0; row < game.board.size; row++) {
         for (int col = 0; col < game.board.size; col++) {
             char thisChar = game.board.at(row, col);
@@ -64,12 +66,23 @@ StatusView::StatusView(Game& newGame, int topLeftY, int topLeftX, int cols) :
 
 
 void StatusView::draw() {
+    werase(viewWindow);
     const char* currentPlayerName = game.getCurrentPlayerName();
     mvwprintw(viewWindow, 0, 0, "%s's turn", currentPlayerName);
 }
 
 
 void StatusView::displayWinner(const char* winningPlayerName) {
+    // need a space on the following line because it displays an `n` character
+    // if i don't put anything at the end... so weird
+    werase(viewWindow);
     mvwprintw(viewWindow, 0, 0, "%s wins!", winningPlayerName);
-    mvwprintw(viewWindow, 1, 0, "press any key to exit");
+    mvwprintw(viewWindow, 1, 0, "Press any key to exit");
+}
+
+
+void StatusView::gameDrawn() {
+    werase(viewWindow);
+    mvwprintw(viewWindow, 0, 0, "Game drawn!");
+    mvwprintw(viewWindow, 1, 0, "Press any key to exit");
 }

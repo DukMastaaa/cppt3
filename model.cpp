@@ -1,5 +1,6 @@
 #include <vector>
 #include <assert.h>
+#include <ncurses.h>
 #include "model.h"
 
 
@@ -20,7 +21,7 @@ void Board::set(int row, int col, char value) {
 }
 
 
-char Board::has_won() {
+char Board::hasWon() {
     /* Returns the winning player, else EMPTY. */
     
     char diagStart = at(0, 0);
@@ -53,6 +54,18 @@ char Board::has_won() {
 }
 
 
+bool Board::allCellsFilled() {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (at(i, j) == EMPTY) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
 Game::Game(int boardSize, const char* newP1Name, const char* newP2Name) 
         : board(Board(boardSize)), p1Name(newP1Name), p2Name(newP2Name) {
     xPos = 0;
@@ -75,24 +88,26 @@ const char*& Game::getCurrentPlayerName() {
 }
 
 
-void Game::moveSelection(char wasd) {
+void Game::moveSelection(int input) {
     int newY = yPos;
     int newX = xPos;
-    switch (wasd) {
+    switch (input) {
         case 'w':
+        case KEY_UP:
             newY--;
             break;
         case 'a':
+        case KEY_LEFT:
             newX--;
             break;
         case 's':
+        case KEY_DOWN:
             newY++;
             break;
         case 'd':
+        case KEY_RIGHT:
             newX++;
             break;
-        // default:  // don't really want to do anything if this happens
-        //     throw "wasd direction invalid";
     }
     if (0 <= newX && newX < board.size && 0 <= newY && newY < board.size) {
         xPos = newX;

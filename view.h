@@ -27,4 +27,5 @@ class StatusView : public BaseView {
         StatusView(Game& newGame, int topLeftY, int topLeftX, int cols);
         void draw();
         void displayWinner(const char* winningPlayerName);
+        void gameDrawn();  // if players come to a draw
 };

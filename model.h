@@ -17,7 +17,8 @@ class Board {
         Board(int boardSize);
         char& at(int row, int col);
         void set(int row, int col, char value);
-        char has_won();
+        char hasWon();
+        bool allCellsFilled();
 };
 
 
@@ -31,6 +32,6 @@ class Game {
         const char* p2Name;
         Game(int boardSize, const char* p1Name, const char* p2Name);
         const char*& getCurrentPlayerName();
-        void moveSelection(char wasd);
+        void moveSelection(int input);
         void doTurn();
 };

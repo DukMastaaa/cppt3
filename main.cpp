@@ -7,8 +7,6 @@
 
 
 bool stringIsDigit(const std::string& input) {
-    // i can't believe i have to write something like this
-    // low level scum
     for (char character : input) {
         if (!isdigit(character)) {
             return false;

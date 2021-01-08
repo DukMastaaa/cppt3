@@ -68,7 +68,7 @@ int main() {
 
     while (game.board.hasWon() == EMPTY) {
         if (game.board.allCellsFilled()) {  
-            // for this to happen, game.board.hasWon() == false already.
+            // for this to happen, game.board.hasWon() == EMPTY already.
             gameDrawn = true;
             break;
         }
